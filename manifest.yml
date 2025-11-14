@@ -1,0 +1,7 @@
+---
+name: VS Code
+category: Interactive Apps
+subcategory: IDEs
+role: batch_connect
+description: |
+  Run VS Code on any machine anywhere and access it in the browser with [code-server](https://github.com/coder/code-server).

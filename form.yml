@@ -1,0 +1,54 @@
+---
+cluster: "tillicum"
+
+attributes:
+  num_gpus:
+    widget: "number_field"
+    label: "Number of GPUs"
+    required: true
+    min: 1
+    max: 8
+    step: 1
+    value: 1
+    display: true
+  bc_num_hours:
+    value: 1
+    display: true
+  jupyter_ui:
+    label: User Interface
+    widget: "radio_button"
+    value: "lab"
+    options:
+    - ["Jupyter Lab", "lab" ]
+    - ["Jupyter Notebook", "notebook" ]
+  enable_jupyter_args:
+    label: Modify Jupyter command-line options?
+    widget: "check_box"
+    html_options:
+      data:
+        hide-extra-jupyter-args-when-unchecked: true
+  extra_jupyter_args:
+    label: Jupyter command-line options
+    widget: "text_field"
+    help: Additional arguments for Jupyter command, e.g. "jupyter lab --custom-options"
+  enable_slurm_args:
+    label: Modify Slurm command-line options?
+    widget: "check_box"
+    html_options:
+      data:
+        hide-extra-slurm-args-when-unchecked: true
+  extra_slurm_args:
+    label: Slurm command-line options
+    widget: "text_field"
+    help: Additional arguments for Slurm command, e.g. "sbatch --custom-options"
+
+form:
+  - auto_accounts
+  - auto_qos
+  - num_gpus
+  - bc_num_hours
+  - jupyter_ui
+  - enable_jupyter_args
+  - extra_jupyter_args
+  - enable_slurm_args
+  - extra_slurm_args

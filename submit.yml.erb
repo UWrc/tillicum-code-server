@@ -1,0 +1,15 @@
+---
+script:
+  native:
+    - "--gpus"
+    - "<%= num_gpus %>"
+    <%-
+    unless extra_slurm_args.empty? or enable_slurm_args == "0"
+      args = extra_slurm_args.split
+      args.each do |arg|
+    -%>
+    - "<%= arg %>"
+    <%-
+      end
+    end
+    -%>
