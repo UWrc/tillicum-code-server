@@ -14,23 +14,45 @@ attributes:
   bc_num_hours:
     value: 1
     display: true
-  jupyter_ui:
-    label: User Interface
-    widget: "radio_button"
-    value: "lab"
+  sif:
+    label: VS Code Server Container
+    widget: select
+    help: Select 'Custom' if you have created your own code-server Apptainer image.
     options:
-    - ["Jupyter Lab", "lab" ]
-    - ["Jupyter Notebook", "notebook" ]
-  enable_jupyter_args:
-    label: Modify Jupyter command-line options?
+    - [
+        "linuxserver/code-server",
+        "/gpfs/containers/code-server/code-server_4.105.1.sif",
+        data-hide-custom-sif: true
+      ]
+    - [ "Custom", "" ]
+    value: "Default"
+  custom_sif:
+    label: Full path to your customized code-server Apptainer image.
+    help: "e.g. /gpfs/gscratch/labname/containers/code-server.sif"
+  working_dir:
+    label: "Working Directory"
+    data-filepicker: true
+    data-target-file-type: dirs
+    readonly: false
+    help: |
+      Project's root folder. Defaults to $HOME if left empty.
+  data_dir:
+    label: "Data/Extensions Directory"
+    data-filepicker: true
+    data-target-file-type: dirs
+    readonly: false
+    help: |
+      Alternate storage location for your workspace extensions and data. Defaults to $HOME if left empty.
+  enable_code_server_args:
+    label: Modify code-server command-line options?
     widget: "check_box"
     html_options:
       data:
-        hide-extra-jupyter-args-when-unchecked: true
-  extra_jupyter_args:
-    label: Jupyter command-line options
+        hide-extra-code-server-args-when-unchecked: true
+  extra_code_server_args:
+    label: code-server command-line options
     widget: "text_field"
-    help: Additional arguments for Jupyter command, e.g. "jupyter lab --custom-options"
+    help: Additional arguments for code-server command, e.g. "code-server --custom-options"
   enable_slurm_args:
     label: Modify Slurm command-line options?
     widget: "check_box"
@@ -47,8 +69,11 @@ form:
   - auto_qos
   - num_gpus
   - bc_num_hours
-  - jupyter_ui
-  - enable_jupyter_args
-  - extra_jupyter_args
+  - sif
+  - custom_sif
+  - working_dir
+  - data_dir
+  - enable_code_server_args
+  - extra_code_server_args
   - enable_slurm_args
   - extra_slurm_args

@@ -1,19 +1,68 @@
 #!/usr/bin/env bash
 
-# Benchmark info
-echo "TIMING - Starting main script at: $(date)"
+# Set our working directory and data directory variables
+WORK_DIR="<%= context.working_dir %>"
+DATA_DIR="<%= context.data_dir %>"
 
-# Set working directory to home directory
-cd "${HOME}"
+# Ensure that code-server always starts up in either a user defined directory or the home directory
+if [ ! -e "$WORK_DIR" ]; then
+    WORK_DIR="$HOME"
+elif [ ! -d "$WORK_DIR" ]; then
+    WORK_DIR="$(dirname "$WORK_DIR")"
+fi
 
-# Set variables from user form inputs
-ui="<%= context.jupyter_ui %>" # lab or notebook
-extra_args="<%= context.enable_jupyter_args == "1" ? context.extra_jupyter_args : "" %>" # any extra args provided
+# Data directory is $HOME by default
+if [ ! -e "$DATA_DIR" ]; then
+    DATA_DIR="$HOME"
+elif [ ! -d "$DATA_DIR" ]; then
+    DATA_DIR="$(dirname "$DATA_DIR")"
+fi
 
-# Load Jupyter module
-module purge
-module load jupyter
+# Create config file for code-server
+cat > ${HOME}/.config/code-server/config.yaml <<END
+bind-addr: 127.0.0.1:8080
+auth: password
+password: ${password}
+cert: false
+END
 
-# Launch the Jupyter Notebook Server
-set -x
-jupyter $ui --config="${CONFIG_FILE}" $extra_args
+# Set working directory as default
+cat > ${HOME}/.local/share/code-server/coder.json <<END
+{
+  "query": {
+    "folder": "$WORK_DIR"
+  }
+}
+END
+
+# Configure SSH in VS Code
+mkdir -p $WORK_DIR/.vscode
+cat > $WORK_DIR/.vscode/settings.json <<END
+{
+    "terminal.integrated.profiles.linux": {
+        "apptainer": {
+            "path": "ssh",
+            "icon": "terminal-bash",
+            "args": [
+                "-o StrictHostKeyChecking=no",
+                "localhost",
+            ]
+        },
+    },
+    "terminal.integrated.defaultProfile.linux": "apptainer"
+}
+END
+
+# Launch code-server Server:
+echo "Starting code-server..."
+export PASSWORD=${password}
+
+apptainer exec --cleanenv --home ${HOME} ${CODESERVER_APPTAINER_IMAGE} \
+    /app/code-server/bin/code-server \
+    --bind-addr=${HOSTNAME}:${port} \
+    --user-data-dir="$DATA_DIR/.local/share/code-server" \
+    --extensions-dir="$DATA_DIR/.local/share/code-server/extensions" \
+    --auth=password \
+    --disable-telemetry \
+    --disable-update-check \
+        "$WORK_DIR"
