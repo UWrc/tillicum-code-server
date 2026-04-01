@@ -11,8 +11,18 @@ attributes:
     step: 1
     value: 1
     display: true
-  bc_num_hours:
+  num_hours:
+    widget: "number_field"
+    label: "Number of hours"
     value: 1
+    min: 0
+    display: true
+  num_mins:
+    widget: "number_field"
+    label: "Number of minutes"
+    value: 0
+    min: 0
+    max: 59
     display: true
   sif:
     label: VS Code Server Container
@@ -68,7 +78,8 @@ form:
   - auto_accounts
   - auto_qos
   - num_gpus
-  - bc_num_hours
+  - num_hours
+  - num_mins
   - sif
   - custom_sif
   - working_dir
