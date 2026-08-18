@@ -57,7 +57,7 @@ END
 echo "Starting code-server..."
 export PASSWORD=${password}
 
-apptainer exec --cleanenv --home ${HOME} ${CODESERVER_APPTAINER_IMAGE} \
+apptainer exec --cleanenv --nv --home ${HOME} ${CODESERVER_APPTAINER_IMAGE} \
     /app/code-server/bin/code-server \
     --bind-addr=${HOSTNAME}:${port} \
     --user-data-dir="$DATA_DIR/.local/share/code-server" \
