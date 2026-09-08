@@ -76,6 +76,7 @@ attributes:
 
 form:
   - auto_accounts
+  - auto_queues
   - auto_qos
   - num_gpus
   - num_hours
