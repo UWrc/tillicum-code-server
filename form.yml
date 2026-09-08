@@ -6,7 +6,7 @@ attributes:
     widget: "number_field"
     label: "Number of GPUs"
     required: true
-    min: 1
+    min: 0
     max: 8
     step: 1
     value: 1
