@@ -3,6 +3,10 @@ script:
   native:
     - "--gpus"
     - "<%= num_gpus %>"
+    - "--ntasks"
+    - "1"
+    - "--cpus-per-task"
+    - "<%= num_cpus %>"
     - "--time"
     - "<%= num_hours %>:<%= num_mins %>:00"
     <%-

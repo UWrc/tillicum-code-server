@@ -11,6 +11,15 @@ attributes:
     step: 1
     value: 1
     display: true
+  num_cpus:
+    widget: "number_field"
+    label: "Number of CPUs"
+    required: true
+    min: 1
+    max: 64
+    step: 1
+    value: 1
+    display: true
   num_hours:
     widget: "number_field"
     label: "Number of hours"
@@ -79,6 +88,7 @@ form:
   - auto_queues
   - auto_qos
   - num_gpus
+  - num_cpus
   - num_hours
   - num_mins
   - sif
